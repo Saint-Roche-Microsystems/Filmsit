@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'src/themes/index.dart';
+import 'src/presentation/routes/app_routes.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -12,10 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Filmsit',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: Placeholder(),
+      theme: getGeneralTheme(Brightness.light),
+      routes: AppRoutes.routes,
+      initialRoute: '/',
     );
   }
 }
