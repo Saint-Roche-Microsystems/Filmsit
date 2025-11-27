@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Filmsit',
       debugShowCheckedModeBanner: false,
-      theme: getGeneralTheme(Brightness.light),
+      theme: getGeneralTheme(Brightness.dark),
       routes: AppRoutes.routes,
       initialRoute: '/',
     );
