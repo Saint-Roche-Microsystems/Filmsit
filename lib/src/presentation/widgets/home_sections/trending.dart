@@ -1,9 +1,12 @@
+import 'package:filmsit/src/presentation/viewmodels/movie_viewmodel.dart';
 import 'package:flutter/material.dart';
 import '../../../themes/index.dart';
 import '../glass_container.dart';
 
 class TrendingSection extends StatelessWidget {
-  const TrendingSection({super.key});
+  final MovieViewModel vm;
+
+  const TrendingSection({super.key, required this.vm});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class TrendingSection extends StatelessWidget {
                   width: 220,
                   child: Center(
                     child: Text(
-                      'Trending ${index + 1}',
+                      vm.trendingMovies[index].title,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
