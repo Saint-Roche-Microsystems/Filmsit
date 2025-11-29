@@ -26,17 +26,18 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width ?? 160,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Imagen de la película con el círculo de calificación
-            Stack(
+    final content = GestureDetector(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Ocupar espacio disponible con Expanded
+          Expanded(
+            child: Stack( // Imagen de la película con el círculo de calificación
               children: [
-                PosterImageLoader(posterPath: movie.posterPath),
+                SizedBox.expand(
+                  child: PosterImageLoader(posterPath: movie.posterPath),
+                ),
 
                 // Círculo con calificación
                 if(displayScore == true || displayScore == null)
@@ -60,27 +61,93 @@ class MovieCard extends StatelessWidget {
                     ),
                   ),
               ],
+
             ),
+          ),
 
-            const SizedBox(height: 8),
+          const SizedBox(height: 8),
 
-            // Título de la película
-            Center(
-              child: Text(
-                movie.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: SaintColors.foreground,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+          // Título de la película
+          Center(
+            child: Text(
+              movie.title,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: SaintColors.foreground,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+
+    // Adaptar el contenido si se especifica un ancho
+    return width != null
+        ? SizedBox(width: width, child: content)
+        : content;
   }
+
+
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return SizedBox(
+  //     width: width ?? 160,
+  //     child: GestureDetector(
+  //       onTap: onTap,
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           // Imagen de la película con el círculo de calificación
+  //           Stack(
+  //             children: [
+  //               PosterImageLoader(posterPath: movie.posterPath),
+  //
+  //               // Círculo con calificación
+  //               if(displayScore == true || displayScore == null)
+  //                 Positioned(
+  //                   bottom: 0,
+  //                   right: 8,
+  //                   child: ScoreCircle(
+  //                     score: movie.voteAverage,
+  //                     size: 50,
+  //                   ),
+  //                 ),
+  //
+  //               // Cinta en la esquina
+  //               if (ribbonText != null)
+  //                 Positioned(
+  //                   top: 15,
+  //                   right: -20,
+  //                   child: RibbonBadge(
+  //                     text: ribbonText!,
+  //                     color: ribbonColor ?? SaintColors.error,
+  //                   ),
+  //                 ),
+  //             ],
+  //           ),
+  //
+  //           const SizedBox(height: 8),
+  //
+  //           // Título de la película
+  //           Center(
+  //             child: Text(
+  //               movie.title,
+  //               style: TextStyle(
+  //                 fontWeight: FontWeight.w600,
+  //                 color: SaintColors.foreground,
+  //               ),
+  //               maxLines: 2,
+  //               overflow: TextOverflow.ellipsis,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class PosterImageLoader extends StatelessWidget {

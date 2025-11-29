@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../themes/index.dart';
 import '../filter_dropdown.dart';
 import '../pagination/pagination.dart';
+import '../../viewmodels/movie_viewmodel.dart';
 import 'discover_grid.dart';
 
 class DiscoverSection extends StatefulWidget {
@@ -27,55 +30,61 @@ class _DiscoverSectionState extends State<DiscoverSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Discover',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: SaintColors.primary,
-            shadows: [
-              Shadow(
-                color: SaintColors.primary.withValues(alpha: 0.3),
-                blurRadius: 20,
+    return Consumer<MovieViewModel>(
+      builder: (context, vm, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Discover',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: SaintColors.primary,
+                shadows: [
+                  Shadow(
+                    color: SaintColors.primary.withValues(alpha: 0.3),
+                    blurRadius: 20,
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
+            ),
+            const SizedBox(height: 24),
 
-        // 4.1 Dropdown de filtros
-        FilterDropdown<String>(
-            value: selectedFilter,
-            items: filterItems,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
+            // 4.1 Dropdown de filtros
+            FilterDropdown<String>(
+                value: selectedFilter,
+                items: filterItems,
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      selectedFilter = newValue;
+                    });
+                  }
+                }
+            ),
+            const SizedBox(height: 24),
+
+            // 4.2 Matriz 5x2
+            DiscoverGrid(movies: vm.popularMovies),
+            const SizedBox(height: 28),
+
+            // 4.3 Paginación
+            Pagination(
+              currentPage: currentPage,
+              maxPages: maxPages,
+              onPageChanged: (page) {
                 setState(() {
-                  selectedFilter = newValue;
+                  currentPage = page;
                 });
-              }
-            }
-        ),
-        const SizedBox(height: 24),
-
-        // 4.2 Matriz 5x2
-        DiscoverGrid(),
-        const SizedBox(height: 28),
-
-        // 4.3 Paginación
-        Pagination(
-          currentPage: currentPage,
-          maxPages: maxPages,
-          onPageChanged: (page) {
-            setState(() {
-              currentPage = page;
-            });
-          },
-        ),
-      ],
+              },
+            ),
+          ],
+        );
+      }
     );
+
+
   }
 }
 

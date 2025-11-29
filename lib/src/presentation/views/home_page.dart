@@ -1,5 +1,3 @@
-import 'package:filmsit/src/domain/entities/movie_entity.dart';
-import 'package:filmsit/src/presentation/widgets/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +28,7 @@ class _HomePageState extends State<HomePage> {
       final viewModel = context.read<MovieViewModel>();
       viewModel.fetchTrendingMovies();
       viewModel.fetchUpcomingMovies();
+      viewModel.fetchPopularMovies();
     });
   }
 
@@ -39,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: SaintColors.background,
       body: Consumer<MovieViewModel>(
         builder: (context, viewModel, child) {
-          if (viewModel.isLoading && viewModel.trendingMovies.isEmpty && viewModel.upcomingMovies.isEmpty) {
+          if (viewModel.isLoading && viewModel.trendingMovies.isEmpty && viewModel.upcomingMovies.isEmpty && viewModel.popularMovies.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 

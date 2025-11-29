@@ -31,4 +31,17 @@ class MovieRepository implements BaseRepository {
     }
   }
 
+  @override
+  Future<List<Movie>> getPopularMovies({int page = 1}) async {
+    try {
+      final movieModels = await ds.getPopularMovies(page: page);
+
+      // TODO implementar cantidad a mostrar en base a la paginación porque solo se muestran 10 por página y la API devuelve 20
+
+      return movieModels.map((model) => model.toEntity()).toList();
+    } on ServerException catch (e) {
+      throw ServerFailure(message: e.message);
+    }
+  }
+
 }
