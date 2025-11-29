@@ -3,18 +3,20 @@ import '../../../themes/index.dart';
 
 class ArrowControls extends StatelessWidget {
   final IconData icon;
-  final bool isActive;
+  final bool Function() isActiveCallback;
   final VoidCallback onTap;
 
   const ArrowControls({
     super.key,
     required this.icon,
-    required this.isActive,
+    required this.isActiveCallback,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isActive = isActiveCallback();
+
     return GestureDetector(
       onTap: isActive ? onTap : null,
       child: Container(

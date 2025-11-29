@@ -15,10 +15,6 @@ class DiscoverSection extends StatefulWidget {
 }
 
 class _DiscoverSectionState extends State<DiscoverSection> {
-  // Controles de paginación
-  int currentPage = 1;
-  final int maxPages = 5;
-
   // Filtros
   String selectedFilter = 'all';
   final List<DropdownMenuItem<String>> filterItems = const [
@@ -70,15 +66,7 @@ class _DiscoverSectionState extends State<DiscoverSection> {
             const SizedBox(height: 28),
 
             // 4.3 Paginación
-            Pagination(
-              currentPage: currentPage,
-              maxPages: maxPages,
-              onPageChanged: (page) {
-                setState(() {
-                  currentPage = page;
-                });
-              },
-            ),
+            Pagination(),
           ],
         );
       }

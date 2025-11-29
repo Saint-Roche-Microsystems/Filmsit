@@ -75,15 +75,22 @@ class MovieViewModel extends ChangeNotifier {
   }
 
   // Pagination Methods for popular movies
+  // Update currentPage number
+  void updateCurrentPage(int page) {
+    currentPage = page;
+  }
+
   // Load next page
   Future<void> loadNextPage() async {
     await fetchPopularMovies(page: currentPage + 1);
+    updateCurrentPage(currentPage + 1);
   }
 
   // Load previous page
   Future<void> loadPreviousPage() async {
     if (currentPage > 1) {
       await fetchPopularMovies(page: currentPage - 1);
+      updateCurrentPage(currentPage - 1);
     }
   }
 
