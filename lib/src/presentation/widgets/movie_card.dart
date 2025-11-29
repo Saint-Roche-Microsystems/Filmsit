@@ -12,6 +12,7 @@ class MovieCard extends StatelessWidget {
   final double? width;
   final String? ribbonText;
   final Color? ribbonColor;
+  final bool? displayScore;
 
   const MovieCard({
     super.key,
@@ -20,6 +21,7 @@ class MovieCard extends StatelessWidget {
     this.width,
     this.ribbonText,
     this.ribbonColor,
+    this.displayScore,
   });
 
   @override
@@ -35,15 +37,17 @@ class MovieCard extends StatelessWidget {
             Stack(
               children: [
                 PosterImageLoader(posterPath: movie.posterPath),
+
                 // Círculo con calificación
-                Positioned(
-                  bottom: 0,
-                  right: 8,
-                  child: ScoreCircle(
-                    score: movie.voteAverage,
-                    size: 50,
+                if(displayScore == true || displayScore == null)
+                  Positioned(
+                    bottom: 0,
+                    right: 8,
+                    child: ScoreCircle(
+                      score: movie.voteAverage,
+                      size: 50,
+                    ),
                   ),
-                ),
 
                 // Cinta en la esquina
                 if (ribbonText != null)

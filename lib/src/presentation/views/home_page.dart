@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import '../viewmodels/movie_viewmodel.dart';
 
 import '../widgets/search_bar.dart';
-import '../widgets/home_sections/top_3.dart';
-import '../widgets/home_sections/discover.dart';
 import '../widgets/home_sections/trending.dart';
+import '../widgets/home_sections/discover.dart';
+import '../widgets/home_sections/upcoming.dart';
 
 import '../../themes/index.dart';
 
@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final viewModel = context.read<MovieViewModel>();
       viewModel.fetchTrendingMovies();
+      viewModel.fetchUpcomingMovies();
     });
   }
 
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: SaintColors.background,
       body: Consumer<MovieViewModel>(
         builder: (context, viewModel, child) {
-          if (viewModel.isLoading && viewModel.trendingMovies.isEmpty) {
+          if (viewModel.isLoading && viewModel.trendingMovies.isEmpty && viewModel.upcomingMovies.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -81,11 +82,11 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(height: 32),
 
                         // 2. Sección TOP 3
-                        Top3Section(),
-                        const SizedBox(height: 40),
-
-                        // 3. Sección Trending
                         TrendingSection(),
+                        const SizedBox(height: 20),
+
+                        // 3. Sección Upcoming
+                        UpcomingSection(),
                         const SizedBox(height: 40),
 
                         // 4. Sección Discover
