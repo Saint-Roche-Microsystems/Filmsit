@@ -30,4 +30,23 @@ class MovieDataSource implements BaseDataSource {
     }
   }
 
+  @override
+  Future<List<MovieModel>> getUpcomingMovies() async {
+    final res = await client.get(
+      Uri.parse('${Config.apiBaseUrl}/movie/upcoming?language=es-EC&page=1&region=MX'),
+      headers: {
+        'Authorization': 'Bearer ${Config.apiToken}',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (res.statusCode == 200) {
+      final data = json.decode(res.body);
+      final List results = data['results'] as List;
+      return results.map((json) => MovieModel.fromJson(json)).toList();
+    } else {
+      throw ServerException(message: 'Failed to fetch upcoming movies');
+    }
+  }
+
 }

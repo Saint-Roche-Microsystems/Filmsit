@@ -1,4 +1,3 @@
-import 'package:filmsit/src/data/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -9,11 +8,13 @@ import 'src/themes/index.dart';
 import 'src/presentation/routes/app_routes.dart';
 import 'src/presentation/viewmodels/movie_viewmodel.dart';
 
+import 'src/data/repositories/base_repository.dart';
 import 'src/data/repositories/movie_repository.dart';
 import 'src/data/datasources/base_datasource.dart';
 import 'src/data/datasources/movie_api_datasource.dart';
 
 import 'src/domain/usecases/get_trending_movies_uc.dart';
+import 'src/domain/usecases/get_upcoming_movies.dart';
 
 void main() async {
   await Config.load();
@@ -41,10 +42,15 @@ class MyApp extends StatelessWidget {
             create: (_) => GetTrendingMovies(repository),
           ),
 
+          Provider<GetUpcomingMovies>(
+            create: (_) => GetUpcomingMovies(repository),
+          ),
+
           // ViewModel
           ChangeNotifierProvider<MovieViewModel>(
             create: (context) => MovieViewModel(
               getTrendingMovies: context.read<GetTrendingMovies>(),
+              getUpcomingMovies: context.read<GetUpcomingMovies>(),
             ),
           ),
         ],

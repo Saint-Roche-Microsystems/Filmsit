@@ -6,7 +6,6 @@ import '../../../themes/index.dart';
 import '../movie_card.dart';
 
 class TrendingSection extends StatelessWidget {
-
   const TrendingSection({super.key});
 
   @override
@@ -17,7 +16,7 @@ class TrendingSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Trending',
+              'TRENDING',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -30,24 +29,39 @@ class TrendingSection extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 12),
+            Container(
+              height: 3,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [SaintColors.primary, SaintColors.secondary],
+                ),
+                borderRadius: BorderRadius.circular(2),
+                boxShadow: [
+                  BoxShadow(
+                    color: SaintColors.primary.withValues(alpha: 0.4),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 24),
             SizedBox(
               height: 260,
               child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      right: index < 4 ? 16 : 0,
-                    ),
-                    child: MovieCard(
-                      movie: vm.trendingMovies[index],
-                      ribbonText: 'hot',
-                      ribbonColor: Colors.teal[700],
-                    ),
-                  );
-                },
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        right: index < 4 ? 16 : 0,
+                      ),
+                      child: MovieCard(
+                        movie: vm.trendingMovies[index],
+                        ribbonText: 'hot',
+                      ),
+                    );
+                  },
               ),
             ),
           ],
