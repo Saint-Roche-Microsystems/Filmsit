@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/movie_entity.dart';
+import '../../core/config.dart';
 import '../../themes/index.dart';
+import '../../domain/entities/movie_entity.dart';
 import 'ribbon_badge.dart';
 import 'score_circle.dart';
 
@@ -99,7 +100,7 @@ class PosterImageLoader extends StatelessWidget {
         // Verificar si hay una imagen para mostrar
         child: posterPath != null
             ? Image.network(
-          'https://image.tmdb.org/t/p/w500$posterPath',
+          '${Config.apiPosterUrl}$posterPath',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return NoMovieDisplay();

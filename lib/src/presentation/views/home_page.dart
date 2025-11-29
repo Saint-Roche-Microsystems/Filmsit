@@ -1,3 +1,5 @@
+import 'package:filmsit/src/domain/entities/movie_entity.dart';
+import 'package:filmsit/src/presentation/widgets/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(height: 40),
 
                         // 3. Sección Trending
-                        TrendingSection(vm: viewModel),
+                        TrendingSection(),
                         const SizedBox(height: 40),
 
                         // 4. Sección Discover
