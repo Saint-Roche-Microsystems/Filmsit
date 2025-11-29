@@ -45,6 +45,7 @@ class UpcomingSection extends StatelessWidget {
                       movie: vm.upcomingMovies[index],
                       ribbonText: 'new',
                       ribbonColor: Colors.teal[700],
+                      displayScore: false,
                     ),
                   );
                 },
