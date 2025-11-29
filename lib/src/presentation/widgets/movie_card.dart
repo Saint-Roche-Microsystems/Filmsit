@@ -1,19 +1,24 @@
-import 'package:filmsit/src/presentation/widgets/score_circle.dart';
-import 'package:filmsit/src/themes/index.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/movie_entity.dart';
+import '../../themes/index.dart';
+import 'ribbon_badge.dart';
+import 'score_circle.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
   final VoidCallback? onTap;
   final double? width;
+  final String? ribbonText;
+  final Color? ribbonColor;
 
   const MovieCard({
     super.key,
     required this.movie,
     this.onTap,
     this.width,
+    this.ribbonText,
+    this.ribbonColor,
   });
 
   @override
@@ -28,46 +33,27 @@ class MovieCard extends StatelessWidget {
             // Imagen de la película con el círculo de calificación
             Stack(
               children: [
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: AspectRatio(
-                    aspectRatio: 2 / 3,
-                    child: movie.posterPath != null
-                        ? Image.network(
-                      'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[300],
-                          child: const Icon(
-                            Icons.movie,
-                            size: 64,
-                            color: Colors.grey,
-                          ),
-                        );
-                      },
-                    )
-                        : Container(
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.movie,
-                        size: 64,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-
-                // Círculo con calificación en la esquina inferior derecha
+                PosterImageLoader(posterPath: movie.posterPath),
+                // Círculo con calificación
                 Positioned(
                   bottom: 0,
                   right: 8,
-                  child: ScoreCircle(score: movie.voteAverage, size: 50,),
+                  child: ScoreCircle(
+                    score: movie.voteAverage,
+                    size: 50,
+                  ),
                 ),
+
+                // Cinta en la esquina
+                if (ribbonText != null)
+                  Positioned(
+                    top: 15,
+                    right: -20,
+                    child: RibbonBadge(
+                      text: ribbonText!,
+                      color: ribbonColor ?? SaintColors.error,
+                    ),
+                  ),
               ],
             ),
 
@@ -78,7 +64,6 @@ class MovieCard extends StatelessWidget {
               child: Text(
                 movie.title,
                 style: TextStyle(
-                  //fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: SaintColors.foreground,
                 ),
@@ -92,3 +77,55 @@ class MovieCard extends StatelessWidget {
     );
   }
 }
+
+class PosterImageLoader extends StatelessWidget {
+  final String? posterPath;
+
+  const PosterImageLoader({
+    super.key,
+    this.posterPath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: AspectRatio(
+        aspectRatio: 2 / 3,
+        // Verificar si hay una imagen para mostrar
+        child: posterPath != null
+            ? Image.network(
+          'https://image.tmdb.org/t/p/w500$posterPath',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return NoMovieDisplay();
+          },
+        )
+        // Si no hay imagen mostrar un ícono
+            : NoMovieDisplay(),
+      ),
+    );
+  }
+}
+
+
+class NoMovieDisplay extends StatelessWidget {
+  const NoMovieDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey[300],
+      child: const Icon(
+        Icons.movie,
+        size: 64,
+        color: Colors.grey,
+      ),
+    );
+  }
+}
+
