@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
 
                         // 2. Sección TOP 3
                         TrendingSection(),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
 
                         // 3. Sección Upcoming
                         UpcomingSection(),

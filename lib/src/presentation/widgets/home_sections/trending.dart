@@ -1,3 +1,4 @@
+import 'package:filmsit/src/presentation/widgets/movie_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,23 +47,12 @@ class TrendingSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              height: 260,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        right: index < 4 ? 16 : 0,
-                      ),
-                      child: MovieCard(
-                        movie: vm.trendingMovies[index],
-                        ribbonText: 'hot',
-                      ),
-                    );
-                  },
-              ),
+            MovieCarousel(
+              movies: vm.trendingMovies,
+              cardWidth: 180,
+              onMovieTap: (movie) {
+                print('Película seleccionada: ${movie.title}');
+              },
             ),
           ],
         );
