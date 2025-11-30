@@ -1,0 +1,24 @@
+\subsection{Estrucutra de proyecto}
+
+La app utiliza el patrón arquitectónico MVVM en conjunto con Clean Architecture para organizar su distribución.Para ello, se parte de la carpeta “src/”, la cual se compone de los siguientes directorios:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7 \textwidth, height=10cm, keepaspectratio]{estructura_proyecto.png}
+    \caption{Estructura de directorios}
+    \label{fig:estructura_proyecto}
+\end{figure}
+
+Siendo los directorios princiales los siguientes:
+
+\begin{itemize}
+    \item \textbf{core:} Contiene la configuración principal de la aplicación, donde se optienen las variables de entorno. También se definen manejadores de errores simples, utilizados en llamadas de API u otros errores en la aplicación. 
+    
+    \item \textbf{data:} Implementa la capa de datos, incluyendo modelos, fuentes de datos (en este caso remotas por la API) y repositorios que gestionan la obtención y almacenamiento de datos.
+    
+    \item \textbf{domain:} Define la lógica de negocio a través de entidades, casos de uso a partir de los repositorios abstractos que describen las operaciones disponibles.
+    
+    \item \textbf{presentation:} Maneja la interfaz de usuario, el ruteo y la interacción del usuario mediante pantallas, widgets y proveedores para el estado reactivo con view models.
+    
+    \item \textbf{themes:} Contiene los esquemas de colores, tipografía y estilos reutilizables para mantener la consistencia visual en toda la aplicación.
+\end{itemize}
