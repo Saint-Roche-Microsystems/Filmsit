@@ -34,11 +34,23 @@ class MovieRepository implements BaseRepository {
   @override
   Future<List<Movie>> getPopularMovies({int page = 1}) async {
     try {
-      final movieModels = await ds.getPopularMovies(page: page);
+      // Retreive results by groups of 10 per page from the API. (API returns 20 results per page)
+      // ex: pages 1&2 use page 1 from the API
+      int pageIndex = (page ~/ 2);
+      if(page%2 != 0) {
+        // Increment by 1 ONLY for odd pages
+        pageIndex++;
+      }
 
-      // TODO implementar cantidad a mostrar en base a la paginación porque solo se muestran 10 por página y la API devuelve 20
+      final movieModels = await ds.getPopularMovies(page: pageIndex);
 
-      return movieModels.map((model) => model.toEntity()).toList();
+      // Odd numbers: 1-10
+      if(page%2 == 0) {
+        return movieModels.skip(10).map((model) => model.toEntity()).toList();
+      }
+
+      // Even numbers: 11-20
+      return movieModels.take(10).map((model) => model.toEntity()).toList();
     } on ServerException catch (e) {
       throw ServerFailure(message: e.message);
     }
