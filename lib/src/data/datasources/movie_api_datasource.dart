@@ -67,4 +67,23 @@ class MovieDataSource implements BaseMovieDataSource {
       throw ServerException(message: 'Failed to fetch popular movies');
     }
   }
+
+  @override
+  Future<List<MovieModel>> getMoviesByGenre(int genre, {int page = 1}) async {
+    final response = await client.get(
+      Uri.parse('${Config.apiBaseUrl}/discover/movie?&with_genres=$genre&language=es-MX&page=$page'),
+      headers: {
+        'Authorization': 'Bearer ${Config.apiToken}',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List results = data['results'] as List;
+      return results.map((json) => MovieModel.fromJson(json)).toList();
+    } else {
+      throw ServerException(message: 'Failed to fetch popular movies');
+    }
+  }
 }

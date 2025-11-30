@@ -1,12 +1,12 @@
-import 'package:filmsit/src/domain/entities/genre_entity.dart';
-import 'package:filmsit/src/presentation/viewmodels/genre_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../themes/index.dart';
-import '../filter_dropdown.dart';
-import '../pagination/pagination.dart';
+import '../../../domain/entities/genre_entity.dart';
+import '../../viewmodels/genre_viewmodel.dart';
 import '../../viewmodels/movie_viewmodel.dart';
+import '../pagination/pagination.dart';
+import '../filter_dropdown.dart';
 import 'discover_grid.dart';
 
 class DiscoverSection extends StatefulWidget {
@@ -61,6 +61,12 @@ class _DiscoverSectionState extends State<DiscoverSection> {
                 onChanged: (int? value) {
                   if (value != null) {
                     genvm.updateSelectedGenre(value);
+
+                    if(value == 0){
+                      context.read<MovieViewModel>().fetchPopularMovies();
+                    } else {
+                      context.read<MovieViewModel>().filterMoviesByGenre(value);
+                    }
                   }
                 },
               );

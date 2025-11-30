@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../viewmodels/genre_viewmodel.dart';
 import '../../viewmodels/movie_viewmodel.dart';
 import 'arrow_controls.dart';
 import 'number_controls.dart';
@@ -36,10 +37,10 @@ class Pagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MovieViewModel>(
-      builder: (context, vm, child) {
+    return Consumer2<MovieViewModel, GenreViewmodel>(
+      builder: (context, movVM, genVM, child) {
         // Obtener números de páginas visibles en base al ViewModel
-        List<int> visiblePages = _getVisiblePages(vm.currentPage);
+        List<int> visiblePages = _getVisiblePages(movVM.currentPage);
 
         return  Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,8 +48,8 @@ class Pagination extends StatelessWidget {
             // Botón anterior
             ArrowControls(
                 icon: Icons.chevron_left,
-                isActiveCallback: () => vm.currentPage > 1,
-                onTap: () => vm.loadPreviousPage(),
+                isActiveCallback: () => movVM.currentPage > 1,
+                onTap: () => movVM.loadPreviousPage(genre: genVM.selectedGenre),
             ),
 
             const SizedBox(width: 12),
@@ -59,10 +60,10 @@ class Pagination extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 12),
                 child: NumberControls(
                   page: page,
-                  isActiveCallback: () => vm.currentPage == page,
+                  isActiveCallback: () => movVM.currentPage == page,
                   onTap: () {
-                    vm.fetchPopularMovies(page: page);
-                    vm.updateCurrentPage(page);
+                    movVM.filterMoviesByGenre(genVM.selectedGenre, page: page);
+                    movVM.updateCurrentPage(page);
                   },
                 ),
               );
@@ -71,8 +72,8 @@ class Pagination extends StatelessWidget {
            // Botón siguiente
             ArrowControls(
                 icon: Icons.chevron_right,
-                isActiveCallback: () => vm.currentPage < maxPages,
-                onTap: () => vm.loadNextPage(),
+                isActiveCallback: () => movVM.currentPage < maxPages,
+                onTap: () => movVM.loadNextPage(genre: genVM.selectedGenre),
             ),
           ],
         );
