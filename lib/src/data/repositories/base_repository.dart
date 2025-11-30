@@ -6,6 +6,7 @@ abstract class BaseMovieRepository {
   Future<List<Movie>> getUpcomingMovies();
   Future<List<Movie>> getPopularMovies({int page = 1});
   Future<List<Movie>> getMoviesByGenre(int genre, {int page = 1});
+  Future<List<Movie>> searchMovies({required String querry});
 }
 
 abstract class BaseGenreRepository {

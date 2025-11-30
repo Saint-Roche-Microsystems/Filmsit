@@ -6,6 +6,7 @@ abstract class BaseMovieDataSource {
   Future<List<MovieModel>> getUpcomingMovies();
   Future<List<MovieModel>> getPopularMovies({int page = 1});
   Future<List<MovieModel>> getMoviesByGenre(int genre, {int page = 1});
+  Future<List<MovieModel>> searchMovies({required String querry});
 }
 
 abstract class BaseGenreDataSource {

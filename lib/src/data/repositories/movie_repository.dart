@@ -81,4 +81,14 @@ class MovieRepository implements BaseMovieRepository {
     }
   }
 
+  @override
+  Future<List<Movie>> searchMovies({required String querry}) async {
+    try {
+      final movieModels = await ds.searchMovies(querry: querry);
+      return movieModels.map((model) => model.toEntity()).toList();
+    } on ServerException catch (e) {
+      throw ServerFailure(message: e.message);
+    }
+  }
+
 }
