@@ -1,3 +1,5 @@
+import 'package:filmsit/src/domain/entities/genre_entity.dart';
+import 'package:filmsit/src/presentation/viewmodels/genre_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,63 +18,69 @@ class DiscoverSection extends StatefulWidget {
 
 class _DiscoverSectionState extends State<DiscoverSection> {
   // Filtros
-  String selectedFilter = 'all';
-  final List<DropdownMenuItem<String>> filterItems = const [
-    DropdownMenuItem(value: 'all', child: Text('Todos')),
-    DropdownMenuItem(value: 'popular', child: Text('Populares')),
-    DropdownMenuItem(value: 'recent', child: Text('Recientes')),
-    DropdownMenuItem(value: 'featured', child: Text('Destacados')),
-  ];
+  List<DropdownMenuItem<int>> _getFilterItems(List<Genre> genres) {
+    return [
+      DropdownMenuItem<int>(value: 0, child: Text('Todos')),
+      ...genres.map((genre) {
+        return DropdownMenuItem(
+            value: genre.id,
+            child: Text(genre.name),
+        );
+      })
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MovieViewModel>(
-      builder: (context, vm, child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Discover',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: SaintColors.primary,
-                shadows: [
-                  Shadow(
-                    color: SaintColors.primary.withValues(alpha: 0.3),
-                    blurRadius: 20,
-                  ),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Discover',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: SaintColors.primary,
+            shadows: [
+              Shadow(
+                color: SaintColors.primary.withValues(alpha: 0.3),
+                blurRadius: 20,
               ),
-            ),
-            const SizedBox(height: 24),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
 
-            // 4.1 Dropdown de filtros
-            FilterDropdown<String>(
-                value: selectedFilter,
+        Consumer<GenreViewmodel>(
+            builder: (context, genvm, child) {
+              final filterItems = _getFilterItems(genvm.genresList);
+
+              return FilterDropdown<int>(
+                valueGetter: () => genvm.selectedGenre,
                 items: filterItems,
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    setState(() {
-                      selectedFilter = newValue;
-                    });
+                onChanged: (int? value) {
+                  if (value != null) {
+                    genvm.updateSelectedGenre(value);
                   }
-                }
-            ),
-            const SizedBox(height: 24),
+                },
+              );
+            }
+        ),
+        const SizedBox(height: 24),
 
-            // 4.2 Matriz 5x2
-            DiscoverGrid(movies: vm.popularMovies),
-            const SizedBox(height: 28),
+        Consumer<MovieViewModel>(
+            builder: (context, movvm, child) {
+              return DiscoverGrid(movies: movvm.popularMovies);
+            }
+        ),
 
-            // 4.3 Paginación
-            Pagination(),
-          ],
-        );
-      }
+        const SizedBox(height: 28),
+
+        // 4.3 Paginación
+        Pagination(),
+
+      ],
     );
-
-
   }
 }
 

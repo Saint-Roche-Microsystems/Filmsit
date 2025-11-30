@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/movie_viewmodel.dart';
+import '../viewmodels/genre_viewmodel.dart';
 
 import '../widgets/search_bar.dart';
 import '../widgets/home_sections/trending.dart';
@@ -25,31 +26,43 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Fetch data on init
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = context.read<MovieViewModel>();
-      viewModel.fetchTrendingMovies();
-      viewModel.fetchUpcomingMovies();
-      viewModel.fetchPopularMovies();
+      final movieVM = context.read<MovieViewModel>();
+      movieVM.fetchTrendingMovies();
+      movieVM.fetchUpcomingMovies();
+      movieVM.fetchPopularMovies();
+
+      final genreVM = context.read<GenreViewmodel>();
+      genreVM.fetchGenres();
     });
+  }
+
+  Future<void> _refreshData() async {
+    await Future.wait([
+      context.read<MovieViewModel>().refresh(),
+      context.read<GenreViewmodel>().refresh(),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SaintColors.background,
-      body: Consumer<MovieViewModel>(
-        builder: (context, viewModel, child) {
-          if (viewModel.isLoading && viewModel.trendingMovies.isEmpty && viewModel.upcomingMovies.isEmpty && viewModel.popularMovies.isEmpty) {
+      body: Consumer2<MovieViewModel, GenreViewmodel>(
+        builder: (context, movVM, genVM, child) {
+          if (movVM.isLoading && movVM.trendingMovies.isEmpty &&
+              movVM.upcomingMovies.isEmpty && movVM.popularMovies.isEmpty &&
+              genVM.genresList.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.errorMessage != null) {
+          if (movVM.errorMessage != null) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(viewModel.errorMessage!),
+                  Text(movVM.errorMessage!),
                   ElevatedButton(
-                    onPressed: () => viewModel.refresh(),
+                    onPressed: () => movVM.refresh(),
                     child: const Text('Reintentar'),
                   ),
                 ],
@@ -58,7 +71,7 @@ class _HomePageState extends State<HomePage> {
           }
 
           return RefreshIndicator(
-              onRefresh: () => viewModel.refresh(),
+              onRefresh: _refreshData,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: RadialGradient(

@@ -35,6 +35,7 @@ class GenreViewmodel extends ChangeNotifier {
   // Update selectedGenre number
   void updateSelectedGenre(int genre) {
     selectedGenre = genre;
+    notifyListeners();
   }
 
   // Refresh
