@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../routes/app_routes.dart';
+import '../../routes/movie_details_arguments.dart';
+
 import '../../../themes/index.dart';
 import '../../viewmodels/movie_viewmodel.dart';
 import 'search_results_overlay.dart';
@@ -90,8 +93,11 @@ class _MovieSearchBarState extends State<MovieSearchBar> {
                     context.read<MovieViewModel>().clearSearch();
                     _removeOverlay();
 
-                    // TODO: Navegar a detalles de la película
-                    // Navigator.push(context, ...);
+                    // Ir a la pantalla de detalle
+                    Navigator.pushNamed(context,
+                      AppRoutes.movieDetail,
+                      arguments: MovieDetailsArguments(movieId: movie.id),
+                    );
                   },
                   onClose: () {
                     _removeOverlay();

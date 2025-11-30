@@ -1,7 +1,9 @@
+
 import 'base_repository.dart';
 import '../../core/errors/exceptions.dart';
 import '../../core/errors/failures.dart';
 import '../../domain/entities/movie_entity.dart';
+import '../../domain/entities/movie_details_entity.dart';
 import '../datasources/movie_api_datasource.dart';
 
 class MovieRepository implements BaseMovieRepository {
@@ -86,6 +88,16 @@ class MovieRepository implements BaseMovieRepository {
     try {
       final movieModels = await ds.searchMovies(querry: querry);
       return movieModels.map((model) => model.toEntity()).toList();
+    } on ServerException catch (e) {
+      throw ServerFailure(message: e.message);
+    }
+  }
+
+  @override
+  Future<MovieDetails> getMovieDetails({required int id}) async {
+    try {
+      final movieDetailsModel = await ds.getMovieDetails(id: id);
+      return movieDetailsModel.toEntity();
     } on ServerException catch (e) {
       throw ServerFailure(message: e.message);
     }
