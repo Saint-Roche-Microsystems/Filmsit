@@ -66,6 +66,10 @@ class MyApp extends StatelessWidget {
             create: (_) => GetMoviesByGenre(movieRep),
           ),
 
+          Provider<SearchMovies>(
+            create: (_) => SearchMovies(movieRep),
+          ),
+
           Provider<GetGenres>(
             create: (_) => GetGenres(genreRep),
           ),

@@ -90,7 +90,7 @@ class MovieDataSource implements BaseMovieDataSource {
   @override
   Future<List<MovieModel>> searchMovies({required String querry}) async {
     final response = await client.get(
-      Uri.parse('${Config.apiBaseUrl}/search/movie?query=$querry'),
+      Uri.parse('${Config.apiBaseUrl}/search/movie?language=es-MX&query=$querry'),
       headers: {
         'Authorization': 'Bearer ${Config.apiToken}',
         'Content-Type': 'application/json',
