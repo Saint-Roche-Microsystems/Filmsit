@@ -17,7 +17,7 @@ class TrendingSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'TRENDING',
+              'TENDENCIA',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,

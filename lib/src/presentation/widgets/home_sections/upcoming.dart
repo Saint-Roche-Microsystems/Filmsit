@@ -17,7 +17,7 @@ class UpcomingSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Upcoming',
+              'Proximamente',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
