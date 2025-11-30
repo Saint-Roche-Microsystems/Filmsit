@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../../domain/entities/movie_entity.dart';
@@ -5,18 +6,21 @@ import '../../domain/usecases/get_trending_movies_uc.dart';
 import '../../domain/usecases/get_upcoming_movies.dart';
 import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/usecases/get_movies_by_genre.dart';
+import '../../domain/usecases/search_movies.dart';
 
 class MovieViewModel extends ChangeNotifier {
   final GetTrendingMovies getTrendingMovies;
   final GetUpcomingMovies getUpcomingMovies;
   final GetPopularMovies getPopularMovies;
-  final GetMoviesByGenre getMoviesByGenre ;
+  final GetMoviesByGenre getMoviesByGenre;
+  final SearchMovies searchMovies;
 
   MovieViewModel({
     required this.getTrendingMovies,
     required this.getUpcomingMovies,
     required this.getPopularMovies,
     required this.getMoviesByGenre,
+    required this.searchMovies,
   });
 
   // States
@@ -26,6 +30,62 @@ class MovieViewModel extends ChangeNotifier {
   bool isLoading = false;
   int currentPage = 1;
   String? errorMessage;
+
+  // Search related states
+  List<Movie> searchResults = [];
+  bool isSearching = false;
+  String searchQuery = '';
+  Timer? debounceTimer;
+
+  // Methods related to seach
+  void searchMoviesWithDebounce(String query) {
+    debounceTimer?.cancel();
+
+    // Format the Querry to be used by the API
+    searchQuery = query.trim().replaceAll(RegExp(r'\s+'), ' ');
+
+    if (searchQuery.isEmpty) {
+      searchResults = [];
+      isSearching = false;
+      notifyListeners();
+      return;
+    }
+
+    isSearching = true;
+    notifyListeners();
+
+    // Create a new timer that waits 500ms to perform the search
+    debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      _doSearch(searchQuery);
+    });
+  }
+
+  // API call to execute the search
+  Future<void> _doSearch(String query) async {
+    if (query.isEmpty) return;
+
+    isSearching = true;
+    notifyListeners();
+
+    try {
+      searchResults = await searchMovies(query: query);
+    } catch (e) {
+      searchResults = [];
+      errorMessage = 'Error en la búsqueda: $e';
+    } finally {
+      isSearching = false;
+      notifyListeners();
+    }
+  }
+
+  // Default values for the search
+  void clearSearch() {
+    debounceTimer?.cancel();
+    searchQuery = '';
+    searchResults = [];
+    isSearching = false;
+    notifyListeners();
+  }
 
   // Methods to manipulate state
 

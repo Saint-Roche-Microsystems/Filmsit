@@ -21,6 +21,7 @@ import 'src/domain/usecases/get_trending_movies_uc.dart';
 import 'src/domain/usecases/get_upcoming_movies.dart';
 import 'src/domain/usecases/get_popular_movies.dart';
 import 'src/domain/usecases/get_movies_by_genre.dart';
+import 'src/domain/usecases/search_movies.dart';
 import 'src/domain/usecases/get_genres.dart';
 
 void main() async {
@@ -65,6 +66,10 @@ class MyApp extends StatelessWidget {
             create: (_) => GetMoviesByGenre(movieRep),
           ),
 
+          Provider<SearchMovies>(
+            create: (_) => SearchMovies(movieRep),
+          ),
+
           Provider<GetGenres>(
             create: (_) => GetGenres(genreRep),
           ),
@@ -76,6 +81,7 @@ class MyApp extends StatelessWidget {
               getUpcomingMovies: context.read<GetUpcomingMovies>(),
               getPopularMovies: context.read<GetPopularMovies>(),
               getMoviesByGenre: context.read<GetMoviesByGenre>(),
+              searchMovies: context.read<SearchMovies>(),
             ),
           ),
 

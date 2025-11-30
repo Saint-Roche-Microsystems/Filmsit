@@ -4,7 +4,7 @@ import '../entities/movie_entity.dart';
 class GetUpcomingMovies {
   final MovieRepository repo;
 
-  GetUpcomingMovies( this.repo);
+  GetUpcomingMovies(this.repo);
 
   Future<List<Movie>> call() async {
     return await repo.getUpcomingMovies();
