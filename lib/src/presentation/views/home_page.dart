@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../viewmodels/movie_viewmodel.dart';
 import '../viewmodels/genre_viewmodel.dart';
 
-import '../widgets/search_bar.dart';
+import '../widgets/search/search_bar.dart';
 import '../widgets/home_sections/trending.dart';
 import '../widgets/home_sections/discover.dart';
 import '../widgets/home_sections/upcoming.dart';
@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -90,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // 1. Barra de búsqueda
-                        MovieSearchBar(searchController: searchController),
+                        MovieSearchBar(),
                         const SizedBox(height: 32),
 
                         // 2. Sección TOP 3
