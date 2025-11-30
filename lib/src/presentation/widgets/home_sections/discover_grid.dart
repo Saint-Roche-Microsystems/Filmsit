@@ -1,6 +1,9 @@
-import 'package:filmsit/src/domain/entities/movie_entity.dart';
 import 'package:flutter/material.dart';
 
+import '../../routes/app_routes.dart';
+import '../../routes/movie_details_arguments.dart';
+
+import '../../../domain/entities/movie_entity.dart';
 import '../../widgets/movie_card.dart';
 
 class DiscoverGrid extends StatelessWidget {
@@ -24,6 +27,12 @@ class DiscoverGrid extends StatelessWidget {
         return MovieCard(
           movie: movies[index],
           displayScore: false,
+          onTap: () {
+            Navigator.pushNamed(context,
+              AppRoutes.movieDetail,
+              arguments: MovieDetailsArguments(movieId:movies[index].id),
+            );
+          },
         );
       },
     );
