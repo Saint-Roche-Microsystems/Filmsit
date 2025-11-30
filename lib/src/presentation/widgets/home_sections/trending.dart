@@ -1,7 +1,10 @@
-import 'package:filmsit/src/presentation/widgets/movie_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../routes/app_routes.dart';
+import '../../routes/movie_details_arguments.dart';
+
+import '../../widgets/movie_carousel.dart';
 import '../../viewmodels/movie_viewmodel.dart';
 import '../../../themes/index.dart';
 
@@ -50,7 +53,10 @@ class TrendingSection extends StatelessWidget {
               movies: vm.trendingMovies,
               cardWidth: 180,
               onMovieTap: (movie) {
-                print('Película seleccionada: ${movie.title}');
+                Navigator.pushNamed(context,
+                  AppRoutes.movieDetail,
+                  arguments: MovieDetailsArguments(movieId: movie.id),
+                );
               },
             ),
           ],

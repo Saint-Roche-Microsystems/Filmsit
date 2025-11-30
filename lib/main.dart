@@ -108,7 +108,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: getGeneralTheme(Brightness.dark),
         routes: AppRoutes.routes,
-        initialRoute: '/',
+        initialRoute: AppRoutes.home,
+        onGenerateRoute: AppRoutes.onGenerateRoute,
       ),
     );
   }
