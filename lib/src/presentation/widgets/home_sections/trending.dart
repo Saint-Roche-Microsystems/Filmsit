@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../viewmodels/movie_viewmodel.dart';
 import '../../../themes/index.dart';
-import '../movie_card.dart';
 
 class TrendingSection extends StatelessWidget {
   const TrendingSection({super.key});

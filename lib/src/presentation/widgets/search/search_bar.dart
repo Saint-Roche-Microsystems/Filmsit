@@ -1,3 +1,4 @@
+import 'package:filmsit/src/presentation/views/movie_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -90,8 +91,12 @@ class _MovieSearchBarState extends State<MovieSearchBar> {
                     context.read<MovieViewModel>().clearSearch();
                     _removeOverlay();
 
-                    // TODO: Navegar a detalles de la película
-                    // Navigator.push(context, ...);
+                    // Ir a la pantalla de detalle
+                    Navigator.push(context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieDetailsPage(movieId: movie.id),
+                      ),
+                    );
                   },
                   onClose: () {
                     _removeOverlay();

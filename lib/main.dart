@@ -8,6 +8,7 @@ import 'src/themes/index.dart';
 import 'src/presentation/routes/app_routes.dart';
 import 'src/presentation/viewmodels/movie_viewmodel.dart';
 import 'src/presentation/viewmodels/genre_viewmodel.dart';
+import 'src/presentation/viewmodels/movie_details_viewmodel.dart';
 
 import 'src/data/datasources/base_datasource.dart';
 import 'src/data/datasources/movie_api_datasource.dart';
@@ -22,6 +23,7 @@ import 'src/domain/usecases/get_upcoming_movies.dart';
 import 'src/domain/usecases/get_popular_movies.dart';
 import 'src/domain/usecases/get_movies_by_genre.dart';
 import 'src/domain/usecases/search_movies.dart';
+import 'src/domain/usecases/get_movie_details.dart';
 import 'src/domain/usecases/get_genres.dart';
 
 void main() async {
@@ -74,6 +76,10 @@ class MyApp extends StatelessWidget {
             create: (_) => GetGenres(genreRep),
           ),
 
+          Provider<GetMovieDetails>(
+            create: (_) => GetMovieDetails(movieRep),
+          ),
+
           // ViewModels
           ChangeNotifierProvider<MovieViewModel>(
             create: (context) => MovieViewModel(
@@ -88,6 +94,12 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<GenreViewmodel>(
             create: (context) => GenreViewmodel(
               getGenres: context.read<GetGenres>(),
+            ),
+          ),
+
+          ChangeNotifierProvider(
+            create: (context) => MovieDetailsViewModel(
+              getMovieDetails: context.read<GetMovieDetails>(),
             ),
           ),
         ],
