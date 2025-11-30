@@ -72,3 +72,27 @@ class Movie {
 \end{center}
 
 Este proceso de mapeo explícito ayuda a mantener una coherencia clara entre la estructura de datos que se recibe y los modelos internos de la aplicación, lo que a su vez favorece la mantenibilidad del proyecto, mejora la claridad del código y contribuye a que el sistema pueda escalar de manera ordenada.
+
+\subsection{Uso de Variables de Entorno en el Consumo de APIs}
+Durante el desarrollo de aplicaciones existe información que casi siempre preferimos no incluir directamente en el codigo. Hay datos como las claves de APIs externas, las direcciones de los servidores o los tokens de autenticación. La solución es ocupar las variables de entorno.
+
+El propósito de estas variables es mantener una configuración separada del código. Esto significa que se puede ajustar parámetros sin reescribir partes del programa. también resulta útil porque así no dejamos información confidencial visible en plataformas como GitHub, donde cualquiera podría acceder a ella.
+
+Para Flutter existe el paquete \textit{flutter\_dotenv}, que permite leer archivos de configuración externos (\cite{flutterdotenv2025}). 
+
+La lectura se hace de forma sencilla:
+\begin{center}
+\begin{lstlisting}
+final String baseUrl = dotenv.env['API_URL'] ?? '';
+final String apiKey = dotenv.env['API_KEY'] ?? '';
+\end{lstlisting}
+\end{center}
+Después construimos las peticiones usando estos valores:
+\begin{center}
+\begin{lstlisting}
+final response = await http.get(
+  Uri.parse('$baseUrl/movie/popular?api_key=$apiKey')
+);
+\end{lstlisting}
+\end{center}
+Las ventajas son bastante evidentes: se protege información delicada, podemos cambiar endpoints sin alterar el código interno, y resulta más práctico trabajar en equipo porque cada desarrollador maneja su propia configuración local.
