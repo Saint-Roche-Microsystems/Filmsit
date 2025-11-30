@@ -6,7 +6,7 @@ import '../../core/errors/exceptions.dart';
 import '../models/movie_model.dart';
 import 'base_datasource.dart';
 
-class MovieDataSource implements BaseDataSource {
+class MovieDataSource implements BaseMovieDataSource {
   final http.Client client;
 
   MovieDataSource({required this.client});

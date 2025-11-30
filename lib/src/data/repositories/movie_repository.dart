@@ -4,7 +4,7 @@ import '../../core/errors/failures.dart';
 import '../../domain/entities/movie_entity.dart';
 import '../datasources/movie_api_datasource.dart';
 
-class MovieRepository implements BaseRepository {
+class MovieRepository implements BaseMovieRepository {
   final MovieDataSource ds;
 
   MovieRepository({required this.ds});

@@ -16,7 +16,6 @@ import 'src/data/datasources/movie_api_datasource.dart';
 
 import 'src/domain/usecases/get_trending_movies_uc.dart';
 import 'src/domain/usecases/get_upcoming_movies.dart';
-import 'src/domain/usecases/get_upcoming_movies.dart';
 
 void main() async {
   await Config.load();
@@ -36,8 +35,8 @@ class MyApp extends StatelessWidget {
         providers: [
           // Simple Providers
           Provider<http.Client>.value(value: httpClient),
-          Provider<BaseDataSource>.value(value: datasource),
-          Provider<BaseRepository>.value(value: repository),
+          Provider<BaseMovieDataSource>.value(value: datasource),
+          Provider<BaseMovieRepository>.value(value: repository),
 
           // UseCases
           Provider<GetTrendingMovies>(
