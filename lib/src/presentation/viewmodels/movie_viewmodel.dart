@@ -89,7 +89,7 @@ class MovieViewModel extends ChangeNotifier {
       errorMessage = e.toString();
     } finally {
       isLoading = false;
-      updateCurrentPage(1);
+      updateCurrentPage(page);
       notifyListeners();
     }
   }
