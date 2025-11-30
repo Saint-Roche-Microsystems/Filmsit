@@ -43,6 +43,7 @@ class UpcomingSection extends StatelessWidget {
                     ),
                     child: MovieCard(
                       movie: vm.upcomingMovies[index],
+                      width: 160,
                       ribbonText: 'new',
                       ribbonColor: Colors.teal[700],
                       displayScore: false,

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../themes/index.dart';
-import '../filter_dropdown.dart';
+import '../../../domain/entities/genre_entity.dart';
+import '../../viewmodels/genre_viewmodel.dart';
+import '../../viewmodels/movie_viewmodel.dart';
 import '../pagination/pagination.dart';
+import '../filter_dropdown.dart';
 import 'discover_grid.dart';
 
 class DiscoverSection extends StatefulWidget {
@@ -12,18 +17,18 @@ class DiscoverSection extends StatefulWidget {
 }
 
 class _DiscoverSectionState extends State<DiscoverSection> {
-  // Controles de paginación
-  int currentPage = 1;
-  final int maxPages = 5;
-
   // Filtros
-  String selectedFilter = 'all';
-  final List<DropdownMenuItem<String>> filterItems = const [
-    DropdownMenuItem(value: 'all', child: Text('Todos')),
-    DropdownMenuItem(value: 'popular', child: Text('Populares')),
-    DropdownMenuItem(value: 'recent', child: Text('Recientes')),
-    DropdownMenuItem(value: 'featured', child: Text('Destacados')),
-  ];
+  List<DropdownMenuItem<int>> _getFilterItems(List<Genre> genres) {
+    return [
+      DropdownMenuItem<int>(value: 0, child: Text('Todos')),
+      ...genres.map((genre) {
+        return DropdownMenuItem(
+            value: genre.id,
+            child: Text(genre.name),
+        );
+      })
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,34 +51,40 @@ class _DiscoverSectionState extends State<DiscoverSection> {
         ),
         const SizedBox(height: 24),
 
-        // 4.1 Dropdown de filtros
-        FilterDropdown<String>(
-            value: selectedFilter,
-            items: filterItems,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                setState(() {
-                  selectedFilter = newValue;
-                });
-              }
+        Consumer<GenreViewmodel>(
+            builder: (context, genvm, child) {
+              final filterItems = _getFilterItems(genvm.genresList);
+
+              return FilterDropdown<int>(
+                valueGetter: () => genvm.selectedGenre,
+                items: filterItems,
+                onChanged: (int? value) {
+                  if (value != null) {
+                    genvm.updateSelectedGenre(value);
+
+                    if(value == 0){
+                      context.read<MovieViewModel>().fetchPopularMovies();
+                    } else {
+                      context.read<MovieViewModel>().filterMoviesByGenre(value);
+                    }
+                  }
+                },
+              );
             }
         ),
         const SizedBox(height: 24),
 
-        // 4.2 Matriz 5x2
-        DiscoverGrid(),
+        Consumer<MovieViewModel>(
+            builder: (context, movvm, child) {
+              return DiscoverGrid(movies: movvm.popularMovies);
+            }
+        ),
+
         const SizedBox(height: 28),
 
         // 4.3 Paginación
-        Pagination(
-          currentPage: currentPage,
-          maxPages: maxPages,
-          onPageChanged: (page) {
-            setState(() {
-              currentPage = page;
-            });
-          },
-        ),
+        Pagination(),
+
       ],
     );
   }

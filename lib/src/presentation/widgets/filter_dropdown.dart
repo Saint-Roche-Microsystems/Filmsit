@@ -1,9 +1,10 @@
-import 'package:filmsit/src/themes/index.dart';
 import 'package:flutter/material.dart';
+
+import '../../themes/index.dart';
 import 'glass_container.dart';
 
 class FilterDropdown<T> extends StatelessWidget {
-  final T value;
+  final T Function() valueGetter;
   final List<DropdownMenuItem<T>> items;
   final ValueChanged<T?> onChanged;
   final String? hint;
@@ -12,7 +13,7 @@ class FilterDropdown<T> extends StatelessWidget {
 
   const FilterDropdown({
     super.key,
-    required this.value,
+    required this.valueGetter,
     required this.items,
     required this.onChanged,
     this.hint,
@@ -22,6 +23,8 @@ class FilterDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final value = valueGetter();
+
     return GlassContainer(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: DropdownButtonHideUnderline(

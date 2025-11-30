@@ -1,9 +1,12 @@
+import 'package:filmsit/src/domain/entities/movie_entity.dart';
 import 'package:flutter/material.dart';
-import '../../../themes/index.dart';
-import '../glass_container.dart';
+
+import '../../widgets/movie_card.dart';
 
 class DiscoverGrid extends StatelessWidget {
-  const DiscoverGrid({super.key});
+  final List<Movie> movies;
+
+  const DiscoverGrid({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {
@@ -14,21 +17,13 @@ class DiscoverGrid extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        childAspectRatio: 1.2,
+        childAspectRatio: 0.6,
       ),
-      itemCount: 10,
+      itemCount: movies.length,
       itemBuilder: (context, index) {
-        return GlassContainer(
-          child: Center(
-            child: Text(
-              'Item ${index + 1}',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: SaintColors.secondary,
-              ),
-            ),
-          ),
+        return MovieCard(
+          movie: movies[index],
+          displayScore: false,
         );
       },
     );

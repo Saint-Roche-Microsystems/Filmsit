@@ -3,18 +3,20 @@ import '../../../themes/index.dart';
 
 class NumberControls extends StatelessWidget {
   final int page;
-  final bool isActive;
+  final bool Function() isActiveCallback;
   final VoidCallback onTap;
 
   const NumberControls({
     super.key,
     required this.page,
-    required this.isActive,
+    required this.isActiveCallback,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isActive = isActiveCallback();
+
     return GestureDetector(
       onTap: onTap,
       child: Container(

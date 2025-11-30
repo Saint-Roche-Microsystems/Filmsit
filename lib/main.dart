@@ -7,14 +7,21 @@ import 'src/themes/index.dart';
 
 import 'src/presentation/routes/app_routes.dart';
 import 'src/presentation/viewmodels/movie_viewmodel.dart';
+import 'src/presentation/viewmodels/genre_viewmodel.dart';
+
+import 'src/data/datasources/base_datasource.dart';
+import 'src/data/datasources/movie_api_datasource.dart';
+import 'src/data/datasources/genre_api_datasource.dart';
 
 import 'src/data/repositories/base_repository.dart';
 import 'src/data/repositories/movie_repository.dart';
-import 'src/data/datasources/base_datasource.dart';
-import 'src/data/datasources/movie_api_datasource.dart';
+import 'src/data/repositories/genre_repository.dart';
 
 import 'src/domain/usecases/get_trending_movies_uc.dart';
 import 'src/domain/usecases/get_upcoming_movies.dart';
+import 'src/domain/usecases/get_popular_movies.dart';
+import 'src/domain/usecases/get_movies_by_genre.dart';
+import 'src/domain/usecases/get_genres.dart';
 
 void main() async {
   await Config.load();
@@ -27,30 +34,54 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final httpClient = http.Client();
-    final datasource = MovieDataSource(client: httpClient);
-    final repository = MovieRepository(ds: datasource);
+    final movieDs = MovieDataSource(client: httpClient);
+    final movieRep = MovieRepository(ds: movieDs);
+    final genreDs = GenreDataSource(client: httpClient);
+    final genreRep = GenreRepository(ds: genreDs);
 
     return MultiProvider(
         providers: [
           // Simple Providers
           Provider<http.Client>.value(value: httpClient),
-          Provider<BaseDataSource>.value(value: datasource),
-          Provider<BaseRepository>.value(value: repository),
+          Provider<BaseMovieDataSource>.value(value: movieDs),
+          Provider<BaseMovieRepository>.value(value: movieRep),
+          Provider<BaseGenreDataSource>.value(value: genreDs),
+          Provider<BaseGenreRepository>.value(value: genreRep),
 
           // UseCases
           Provider<GetTrendingMovies>(
-            create: (_) => GetTrendingMovies(repository),
+            create: (_) => GetTrendingMovies(movieRep),
           ),
 
           Provider<GetUpcomingMovies>(
-            create: (_) => GetUpcomingMovies(repository),
+            create: (_) => GetUpcomingMovies(movieRep),
           ),
 
-          // ViewModel
+          Provider<GetPopularMovies>(
+            create: (_) => GetPopularMovies(movieRep),
+          ),
+
+          Provider(
+            create: (_) => GetMoviesByGenre(movieRep),
+          ),
+
+          Provider<GetGenres>(
+            create: (_) => GetGenres(genreRep),
+          ),
+
+          // ViewModels
           ChangeNotifierProvider<MovieViewModel>(
             create: (context) => MovieViewModel(
               getTrendingMovies: context.read<GetTrendingMovies>(),
               getUpcomingMovies: context.read<GetUpcomingMovies>(),
+              getPopularMovies: context.read<GetPopularMovies>(),
+              getMoviesByGenre: context.read<GetMoviesByGenre>(),
+            ),
+          ),
+
+          ChangeNotifierProvider<GenreViewmodel>(
+            create: (context) => GenreViewmodel(
+              getGenres: context.read<GetGenres>(),
             ),
           ),
         ],
