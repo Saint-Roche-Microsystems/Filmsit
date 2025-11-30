@@ -20,3 +20,14 @@ class SkyColors {
 
   static const Color error = Color(0xFFF07D7D);
 }
+
+class WarmColors {
+  static const Color orange = Color(0xFFFF9800);
+  static const Color yellow = Color(0xFFFFD700);
+  static const Color gold = Color(0xFFFFC107);
+  static const Color deepBlue = Color(0xFF0A1628);
+  static const Color cream = Color(0xFFFFF8E1);
+  static const Color marineBlue = Color(0xFF1A2942);
+  static const Color red = Color(0xFFEF5350);
+  static const Color green = Color(0xFF66BB6A);
+}
