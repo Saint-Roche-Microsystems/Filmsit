@@ -1,0 +1,32 @@
+\subsection{Repositorios}
+
+Cada repositorio implementa su interfaz correspondiente en base al tipo de entidad. Así mismo, cada respositorio hace uso de su respectivo \textbf{datasource} para obtener los datos.
+
+En algunos casos simplemente se hace la llamada a los datos y se toma solo los primeros 3 o 5 elementos, pero en otros casos donde se toman más datos, se optó por utilizar las siguientes reglas de paginación:
+
+\begin{itemize}
+    \item \textbf{Parámetros de entrada:} Se recibe de parámetro la varaible \texttt{page}, la cual por defecto siempre será 1.
+    
+    \item \textbf{Cantidad de resultados:} Se obtienen resultados en bloques de 10, por lo que por cada página de la API se obtienen 2 bloques de resultados.
+\end{itemize}
+
+Puesto que la variable \lstinline{page} que viene como parámetro no es precisamente la misma de la API, se tiene que dividir los resultados en base a si la página es par o impar, siguiendo el procedimiento:
+
+\begin{center}
+\begin{lstlisting}
+      int pageIndex = (page ~/ 2);
+      if(page%2 != 0) {
+        pageIndex++;
+      }
+
+      // Hacer la consulta a la API...
+
+      // Odd numbers: 1-10
+      if(page%2 == 0) {
+        // Retornar primer grupo
+      }
+
+      // Even numbers: 11-20
+      return // Retornar segundo grupo
+\end{lstlisting}
+\end{center}

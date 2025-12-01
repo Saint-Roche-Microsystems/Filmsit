@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../routes/app_routes.dart';
+import '../../routes/movie_details_arguments.dart';
+
 import '../../viewmodels/movie_viewmodel.dart';
 import '../../../themes/index.dart';
 import '../movie_card.dart';
@@ -17,7 +20,7 @@ class UpcomingSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Upcoming',
+              'Proximamente',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -47,6 +50,12 @@ class UpcomingSection extends StatelessWidget {
                       ribbonText: 'new',
                       ribbonColor: Colors.teal[700],
                       displayScore: false,
+                      onTap: () {
+                        Navigator.pushNamed(context,
+                          AppRoutes.movieDetail,
+                          arguments: MovieDetailsArguments(movieId:vm.upcomingMovies[index].id),
+                        );
+                      },
                     ),
                   );
                 },

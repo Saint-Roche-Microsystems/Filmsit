@@ -1,0 +1,98 @@
+\subsection{Arquitectura Limpia (Clean Architecture)}
+En un patrón de diseño de software que lo que intenta es estandarizar la forma en que se organizan los proyectos complejos, esta arquitectura busca que los frameworks, las interfaces de usuario y las bases de datos funcionen de manera independiente. Esta arquitectura se basa en un principio clave el cual se llama la “Regla de Dependencia”, la cual indica que las dependencias del código fuente solo deben orientarse hacia el interior. Esto implica que las capas internas no necesitan saber nada sobre las externas (\cite{martin2018clean}).
+
+En el contexto de Flutter, esta arquitectura se suele dividir en tres capas fundamentales:
+\begin{itemize}
+    \item \textbf{Presentación (Presentation Layer):} contiene la interfaz de usuario (widgets) y los gestores de estado. Su función principal consiste en mostrar los datos al usuario y recoger sus interacciones, actuando como el punto de contacto directo con la aplicación.
+    \item \textbf{Dominio (Domain Layer):} representa el núcleo de la aplicación. Incluye las entidades (modelos de negocio) y los casos de uso, y se mantiene totalmente independiente de librerías externas o detalles concretos de implementación, lo que le da mayor estabilidad a largo plazo.
+    \item \textbf{Datos (Data Layer):} se encarga de obtener la información, ya sea desde una base de datos local o a través de una API remota. En esta capa se implementan los repositorios que fueron definidos previamente en la capa de dominio, cerrando así el ciclo entre la lógica de negocio y las fuentes de datos.
+\end{itemize}
+
+\subsection{Patrón de Gestión de Estado Provider}
+Provider representa, una mejora sólida frente a los InheritedWidgets que Flutter ofrece de forma nativa. Su objetivo principal es simplificar de manera notable la inyección de dependencias y la gestión del estado, funcionando como un puente claro entre la lógica interna y la interfaz de usuario. Lo que realmente lo hace resaltar es su capacidad para separar los datos de la vista. Gracias a esto, la información puede circular con fluidez por el árbol de widgets y los cambios se notifican de forma inteligente, actualizando solo los componentes que realmente necesitan renovarse. Al final, esto se traduce en un mejor rendimiento de la aplicación (\cite{flutter2024provider}).
+
+Para entender mejor cómo funciona, se deben analizar tres componentes esenciales.
+
+\begin{itemize}
+    \item \textbf{ChangeNotifier:} actúa como el núcleo central, donde se encuentran los datos y la lógica de negocio. Esta clase se encarga de almacenar el estado mutable, como podría ser una lista de películas, y de avisar a sus escuchas cada vez que ocurre un cambio.
+    
+    \item \textbf{ChangeNotifierProvider:} funciona como el canal de distribución. Este widget crea una instancia del ChangeNotifier y la inserta en el árbol de widgets, de modo que cualquier descendiente que la necesite pueda acceder a ella sin mayores complicaciones.
+    
+    \item \textbf{Consumer:} se comporta como el receptor atento. Se suscribe a las actualizaciones del proveedor y, cuando recibe una notificación, reconstruye solo la parte específica de la interfaz que depende de esos datos, evitando redibujar toda la pantalla de manera innecesaria.
+\end{itemize}
+
+\subsection{Consumo de Servicios RESTful y Protocolo HTTP}
+La arquitectura REST, o Transferencia de Estado Representacional, plantea una forma ordenada de organizar la comunicación dentro de sistemas que estan distribuidos, centrándose principalmente en la manipulación de recursos que se identifican por medio de URIs y respaldada por un modelo cliente-servidor sin estado. De forma general esta arquitectura plantea interacciones que ocurren a través del protocolo HTTP, con solicitudes viajando de forma independiente y llevando toda la información requerida para que el servidor la procese. Esta arquitectura impulsa la escalabilidad y la solidez del sistema (\cite{richardson2007restful}).
+
+Las operaciones sobre los recursos se expresan mediante métodos estandarizados en el RFC 7231 (2014), que marcan el tipo de acción que se desea realizar:
+\begin{itemize}
+    \item \textbf{GET:} recupera la representación de un recurso sin producir efectos secundarios, es decir, se limita a la lectura.
+    \item \textbf{POST:} envía datos para procesar una entidad o crear un recurso nuevo cuando sea necesario.
+    \item \textbf{PUT:} reemplaza por completo la representación actual de un recurso existente.
+    \item \textbf{PATCH:} permite aplicar cambios parciales sobre un recurso ya creado.
+    \item \textbf{DELETE:} solicita la eliminación del recurso especificado.
+\end{itemize}
+
+Consumir estos servicios implica trabajar de forma asíncrona. Como las operaciones de red introducen latencia, el cliente debe encargarse de procesar las respuestas y los códigos de estado sin bloquear el hilo principal de ejecución. De este modo, se mantiene el rendimiento y la fluidez de la aplicación, algo fundamental en sistemas interactivos y en tiempo real.
+
+\subsection{Serialización y Mapeo de Datos (JSON)}
+La serialización es el proceso mediante el cual se transforman estructuras de datos u objetos en un formato que pueda transmitirse o almacenarse, de forma que luego sea posible reconstruirlos. Este mecanismo resulta fundamental en sistemas distribuidos, porque permite el intercambio estructurado de información entre distintas aplicaciones (\cite{gamma1995design}).
+
+En el desarrollo de software actual, el formato más utilizado para este intercambio es JSON (JavaScript Object Notation). Cuando una aplicación recibe datos en JSON, es necesario convertir ese texto en objetos internos que puedan manipularse con comodidad. En lenguajes fuertemente tipados, como Dart, C\# o Java, este proceso se conoce como deserialización o mapeo de datos y cumple un papel clave: garantiza la seguridad de tipos y ayuda a evitar inconsistencias en tiempo de ejecución. En entornos como Flutter, esta conversión suele implementarse a través de clases modelo que incluyen métodos o constructores especializados para interpretar el contenido del JSON.
+
+\begin{center}
+\begin{lstlisting}
+class Movie {
+  final int id;
+  final String title;
+  final String? posterPath;
+  final double voteAverage;
+  final DateTime releaseDate;
+
+  Movie({
+    required this.id,
+    required this.title,
+    this.posterPath,
+    required this.voteAverage,
+    required this.releaseDate
+  });
+
+  // Método de fábrica para crear una instancia desde un mapa JSON
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      id: json['id'],
+      title: json['title'],
+      posterPath: json['poster_path'],
+      voteAverage: json['vote_average'].toDouble(),
+      releaseDate: DateTime.parse(json['release_date']),
+    );
+  }
+}
+\end{lstlisting}
+\end{center}
+
+Este proceso de mapeo explícito ayuda a mantener una coherencia clara entre la estructura de datos que se recibe y los modelos internos de la aplicación, lo que a su vez favorece la mantenibilidad del proyecto, mejora la claridad del código y contribuye a que el sistema pueda escalar de manera ordenada.
+
+\subsection{Uso de Variables de Entorno en el Consumo de APIs}
+Durante el desarrollo de aplicaciones existe información que casi siempre preferimos no incluir directamente en el codigo. Hay datos como las claves de APIs externas, las direcciones de los servidores o los tokens de autenticación. La solución es ocupar las variables de entorno.
+
+El propósito de estas variables es mantener una configuración separada del código. Esto significa que se puede ajustar parámetros sin reescribir partes del programa. también resulta útil porque así no dejamos información confidencial visible en plataformas como GitHub, donde cualquiera podría acceder a ella.
+
+Para Flutter existe el paquete \textit{flutter\_dotenv}, que permite leer archivos de configuración externos (\cite{flutterdotenv2025}). 
+
+La lectura se hace de forma sencilla:
+\begin{center}
+\begin{lstlisting}
+final String baseUrl = dotenv.env['API_URL'] ?? '';
+final String apiKey = dotenv.env['API_KEY'] ?? '';
+\end{lstlisting}
+\end{center}
+Después construimos las peticiones usando estos valores:
+\begin{center}
+\begin{lstlisting}
+final response = await http.get(
+  Uri.parse('$baseUrl/movie/popular?api_key=$apiKey')
+);
+\end{lstlisting}
+\end{center}
+Las ventajas son bastante evidentes: se protege información delicada, podemos cambiar endpoints sin alterar el código interno, y resulta más práctico trabajar en equipo porque cada desarrollador maneja su propia configuración local.

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../../core/config.dart';
 import '../../core/errors/exceptions.dart';
 import '../models/movie_model.dart';
+import '../models/movie_details_model.dart';
 import 'base_datasource.dart';
 
 class MovieDataSource implements BaseMovieDataSource {
@@ -103,6 +104,24 @@ class MovieDataSource implements BaseMovieDataSource {
       return results.map((json) => MovieModel.fromJson(json)).toList();
     } else {
       throw ServerException(message: 'Failed to search movies');
+    }
+  }
+
+  @override
+  Future<MovieDetailsModel> getMovieDetails({required int id}) async {
+    final response = await client.get(
+      Uri.parse('${Config.apiBaseUrl}/movie/$id?language=es-MX'),
+      headers: {
+        'Authorization': 'Bearer ${Config.apiToken}',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return MovieDetailsModel.fromJson(data);
+    } else {
+      throw ServerException(message: 'Failed to fetch movie details');
     }
   }
 }

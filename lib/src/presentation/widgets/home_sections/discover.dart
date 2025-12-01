@@ -36,7 +36,7 @@ class _DiscoverSectionState extends State<DiscoverSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Discover',
+          'Descubre',
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,

@@ -1,0 +1,30 @@
+\subsection{View Models}
+
+Existen 3 tipos de viewmodels, una para cada entidad. Estos generalmente se componen de:
+
+\begin{itemize}
+  \item \textbf{atributos: } Son los casos de uso que permiten ejecutar la consulta a la API y obtener los datos procesados.
+
+  \item \textbf{estados: } Son variables adicionales que construyen los elementos de la UI. Generalmente se tiene una lista con los datos, un booleado para mostrar un estado de carga y un string para mostrar mensajes de error. En otros casos se agregan otras varaibles, generalmente para valores de elementos de formularios.
+
+  \item \textbf{métodos: } Son funciones que permiten actualizar el estado de las varaibles, lo que sumado con los providers permite actualizar la UI de forma reactiva entre distintos componentes. Para esto es fundamental utiliza \lstinline{notifyListeners()}.
+\end{itemize}
+
+Luego, estos ViewModels son utilizados en distintos widgets y pantallas mediante el widget \lstinline{Consumer}, lo que permite acceder a las varaibles de estado y establecer el comportamiento de la UI. Así se tienen las siguientes pantallas principales:
+
+\textbf{HomePage}
+
+Esta pantalla se compone de una barra de búsqueda en la parte superior. Luego tiene tres secciones:
+
+\begin{itemize}
+  \item \textbf{Trending: } Muesta un carrusel de tarjetas de películas en tendencia. Muestra las 3 más populares.
+
+  \item \textbf{Upcomming: } Muestra una lista Horizontal de 5 películas que están próximas a estrenarse.
+
+  \item \textbf{Discover: } Se compone de un \lstinline{DropDown} que sirve como filtros de películas basados en su género. Luego de un \lstinline{GridView} que muestra las películas que cumplen con el filtro en una cuadrilla de 5x2. Finalmente se pueden ver nuevas películas con un elemento de \lstinline{Pagination} al final de la lista.
+\end{itemize}
+
+
+\textbf{MovieDetailsPage}
+
+En esta se muestra datos específicos de una película. Se muestra el póster, título, calificación, fecha de estreno, géneros, sinopsis y empresas productoras. Todo esto mediante una organización separando cada sección en los siguientes widgets: \lstinline{MovieSliverAppBar}, \lstinline{DetailsMainSection}, \lstinline{MetadataSection}, \lstinline{GenresSection}, \lstinline{OverviewSection}, \lstinline{BudgetSection} y \lstinline{ProductionSection}.
