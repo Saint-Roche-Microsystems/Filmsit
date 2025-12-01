@@ -1,0 +1,30 @@
+\subsection{Entidades}
+
+Se implementaron tres tipos principales de entidades, por consiguiente se cuenta tanto con una declaración tanto en el datasource, repository y model.
+
+\begin{itemize}
+    \item \textbf{Genre:} Estructura simple en la que se especifica el tipo de géneros disponibles en la API. Se compone de un \lstinline{id} id y \lstinline{name}.
+    \item \textbf{Movie:} Entidad principal en la que seobtiene información básica de cada película para presentarlo en forma de resumen en la UI. Se compone de \lstinline{id}, \lstinline{title}, \lstinline{posterPath}, \lstinline{voteAverage} y \lstinline{releaseDate}.
+    \item \textbf{MovieDetails:} Contiene atributos restantes que complementan la información de cada película. En esta se agregan los atributos de \lstinline{overview}, \lstinline{genres} (lista de \lstinline{Genre}), \lstinline{backdropPath}, \lstinline{budget} y \lstinline{productionCompaniesNames} (lista de \lstinline{String}).
+\end{itemize}
+
+Cada entidad parte de endpoints diferentes para obtener los reultados, dichas declaraciones se encuentran explícitamente dentro de los \textbf{datasources}, en donde dependiendo del caso se necesita de tomar ciertos argumentos para poder hacer correctamente la llamada a la API. Así se tiene la siguiente declaración de métodos en la interfaz abstracta:
+
+\begin{center}
+\begin{lstlisting}
+abstract class BaseMovieDataSource {
+  Future<List<MovieModel>> getTrendingMovies();
+  Future<List<MovieModel>> getUpcomingMovies();
+  Future<List<MovieModel>> getPopularMovies({int page = 1});
+  Future<List<MovieModel>> getMoviesByGenre(int genre, {int page = 1});
+  Future<List<MovieModel>> searchMovies({required String querry});
+  Future<MovieDetailsModel> getMovieDetails({required int id});
+}
+
+abstract class BaseGenreDataSource {
+  Future<List<GenreModel>> getGenres();
+}
+\end{lstlisting}
+\end{center}
+
+Como se da a notar, se tienen dos clases abstractas que permiten dividir la responsabilidad y las llamadas en base al tipo de entidad.

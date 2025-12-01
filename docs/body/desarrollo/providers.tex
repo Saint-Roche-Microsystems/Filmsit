@@ -1,0 +1,37 @@
+\subsection{Declaración de Providers}
+
+Estos se ubican dentro del archivo \lstinline{main.dart}. Se utiliza la librería “Provider” para la gestión del estado de la aplicación. Primero se parte de la definición de los providers http, datasource y repositories.
+
+\begin{center}
+\begin{lstlisting}
+  final httpClient = http.Client();
+  final movieDs = MovieDataSource(client: httpClient);
+  final movieRep = MovieRepository(ds: movieDs);
+  final genreDs = GenreDataSource(client: httpClient);
+  final genreRep = GenreRepository(ds: genreDs);
+\end{lstlisting}
+\end{center}
+
+Es en base a estos que luego se pueden definir los providers para cada uno de los casos de uso siguiendo la estructura:
+
+\begin{center}
+\begin{lstlisting}
+Provider<CASO_DE_USO>(
+    create: (_) => CASO_DE_USO(REPOSITORIO),
+),
+\end{lstlisting}
+\end{center}
+
+Una vez definidos los provideres de los casos de uso, se los suministra a los viewmodels correspondientes mediante los \lstinline{ChangeNotifierProvider} siguiendo la estructura:
+
+\begin{center}
+\begin{lstlisting}
+ChangeNotifierProvider<VIEW_MODEL>(
+  create: (context) => VIEW_MODEL(
+    useCase1: context.read<useCase1>(),
+    useCase2: context.read<useCase2>(),
+    ...
+  ),
+),
+\end{lstlisting}
+\end{center}

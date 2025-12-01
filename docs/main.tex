@@ -1,0 +1,186 @@
+\documentclass[12pt,letterpaper]{article}
+
+% =====================
+% Configuración general
+% =====================
+\input{config/libs.tex}
+\input{config/format.tex}
+
+% =====================
+% Documento
+% =====================
+\begin{document}
+\renewcommand{\figurename}{Ilustración} 
+{\textbf{\textcolor{azulOscuro}{INFORME TAREA 2.1}}}
+
+%===========================================================
+%===========================================================
+% --- Tabla de Datos ---
+%===========================================================
+%===========================================================
+
+{\setlength{\parskip}{0pt}
+\section{Datos Generales}
+}
+
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+Título del Informe: & Consumo de APIS+Arquitectura Limpia + Provider \\
+\hline
+Autor(a): & Carlos Hernández, Olivier Paspuel, Antonio Revilla, Frederick Tipán\\
+\hline
+Carrera: & Ingeniería en Software \\
+\hline
+Asignatura o Proyecto: & Desarrollo de Aplicaciones Móviles \\
+\hline
+Tutor o Supervisor: & Mgtr. Doris Karina Chicaiza Angamarca\\
+\hline
+Institución: & Universidad de las Fuerzas Armadas ESPE – Matriz Sangolquí \\
+\hline
+Fecha de entrega: & 30 de noviembre de 2025 \\
+\hline
+\end{tabularx}
+
+
+%===========================================================
+%===========================================================
+% --- Introducción ---
+%===========================================================
+%===========================================================
+
+\section{Introducción}
+
+El siguiente informe presenta el desarrollo de una aplicación móvil, la cual va a consumir una API externa de películas para poder ver el contenido de forma dinámica. Para el desarrollo de esta aplicación móvil se trabajó aplicando una arquitectura limpia, para poder garantizar una separación de responsabilidades entre las diferentes capas que se van a utilizar.
+
+Se implementó el patrón Provider para la gestión de estados de la aplicación. Este patrón permite administrar de forma eficiente y reactiva los datos. Adicional, también se aplicó el patrón de diseño Atomic Design para el diseño de la interfaz, para generar una modularización y asegurar una consistencia visual, pero sobre todo la reutilización de código para evitar duplicidad. Además, se integraron librerías para las peticiones de red y para la parte visual; de forma específica se utilizó la librería http y font\_awesome\_flutter.
+
+Esta aplicación permitió familiarizarse de mejor manera con las técnicas necesarias para integrar servicios RESTful en aplicaciones móviles desarrolladas con Flutter. Esta aplicación permite comprender de mejor manera el proceso de construcción de una aplicación escalable y mantenible, siguiendo estándares que se utilizan en el desarrollo moderno.
+
+\newpage
+
+%===========================================================
+%===========================================================
+% --- índice de Contenidos y Figuras ---
+%===========================================================
+%===========================================================
+
+\renewcommand{\contentsname}{Índice de Contenidos}
+{\setlength{\parskip}{0pt}
+\tableofcontents
+}
+
+\vspace{1.0cm}
+
+\renewcommand{\listfigurename}{Índice de Ilustraciones}
+{\setlength{\cftbeforefigskip}{2pt}
+\listoffigures
+}
+
+\newpage
+
+%===========================================================
+%===========================================================
+% --- Objetivos ---
+%===========================================================
+%===========================================================
+
+\section{Objetivos}
+\subsection{Objetivo General}
+Desarrollar una aplicación que consuma una API externa de películas, la cual implemente una arquitectura limpia y el patrón Provider, de manera que la aplicación resulte escalable, mantenible y facil de trabajar para el desarrollador.
+
+\subsection{Objetivo Específicos}
+- Estructurar las capas del proyecto aplicando Arquitectura Limpia, para garantizar la separación de responsabilidades y la mantenibilidad del código.
+
+- Gestionar el estado reactivo de la aplicación implementando el patrón Provider para un flujo de datos eficiente entre los componentes visuales.
+
+- Visualizar información dinámica de películas consumiendo una API RESTful mediante el uso de la librería http y modelos de datos personalizados.
+
+%===========================================================
+%===========================================================
+% --- Marco Teórico ---
+%===========================================================
+%===========================================================
+
+\section{Marco Teórico}
+\input{body/marco_teorico.tex}
+
+%===========================================================
+%===========================================================
+% --- Desarollo ---
+%===========================================================
+%===========================================================
+
+\section{Desarrollo}
+
+El proyecto se encuentra cargado en el siguiente repositorio de GitHub: 
+
+\href{https://github.com/Saint-Roche-Microsystems/Filmsit}{\color{blue}\underline{https://github.com/Saint-Roche-Microsystems/Filmsit}}
+
+\input{body/desarrollo/estructura_proyecto.tex}
+
+\input{body/desarrollo/entidades.tex}
+\input{body/desarrollo/repositorios.tex}
+
+\input{body/desarrollo/casos_de_uso.tex}
+
+\input{body/desarrollo/providers.tex}
+
+\input{body/desarrollo/ruteo.tex}
+
+\input{body/desarrollo/view_models.tex}
+
+\input{body/desarrollo/widgets.tex}
+
+
+%===========================================================
+%===========================================================
+% --- Conclusiones y Recomendaciones ---
+%===========================================================
+%===========================================================
+
+\section{Conclusiones y Recomendaciones}
+\input{body/conclusiones_recomendaciones.tex}
+
+%===========================================================
+%===========================================================
+% --- Referencias Bibliográficas ---
+%===========================================================
+%===========================================================
+
+\section{Referencias Bibliográficas}
+\printbibliography[heading=none]
+
+%===========================================================
+%===========================================================
+% --- Anexos ---
+%===========================================================
+%===========================================================
+
+\section{Anexos}
+
+\textbf{Pantalla Home}
+
+\begin{figure}[H]
+    \includegraphics[width=0.8 \textwidth, height=12cm, keepaspectratio]{anexos/home.png}
+\end{figure}
+
+\textbf{Pantalla Detalle}
+
+\begin{figure}[H]
+    \includegraphics[width=0.7 \textwidth, height=10cm, keepaspectratio]{anexos/details.png}
+\end{figure}
+
+\textbf{Error al buscar}
+
+\begin{figure}[H]
+    \includegraphics[width=0.6 \textwidth, height=8cm, keepaspectratio]{anexos/no_results.png}
+\end{figure}
+
+\textbf{Widget de recarga}
+
+\begin{figure}[H]
+    \includegraphics[width=0.6 \textwidth, height=8cm, keepaspectratio]{anexos/refresh.png}
+\end{figure}
+
+
+\end{document}

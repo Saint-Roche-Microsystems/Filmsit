@@ -1,0 +1,17 @@
+\subsection{Conclusiones}
+\begin{itemize}
+    \item Se logro desarrollar la aplicación con una arquitectura limpia, en la cual se estableció una clara separación de responsabilidades entre las capas de dominio, datos y presentación. El uso de la arquitectura limpia dentro del proyecto facilito la comprensión del flujo de trabajo y permitió tener un proyecto mantenible en el cual las modificaciones de la lógica de negocio no afecta a la interfaz de usuario.
+    
+    \item El uso del patrón Provider permitió la construcción de una aplicación eficiente, con una gestión de estados centralizada de la aplicación, esto desacopla la lógica de los componentes visuales, de manera que se logro que la interfaz reaccione fluidamente a los cambios de datos como la carga de los mismos, de manera que tiene un flujo de datos dinámico y escalable. 
+
+    \item Se desarrollo de forma correcta la integración con una API externa RESTful específicamente una que tiene un catalogo de películas, además se integro el uso de la librería http. Se concluyo con una aplicación capaz de transformar las respuestas JSON en entidades personalizadas y además verlas en pantalla, logrando el objetivo de mostrar información de forma dinámica y real en la interfaz de usuario.
+\end{itemize}
+
+\subsection{Recomendaciones}
+\begin{itemize}
+    \item Considerando el uso de una arquitectura limpia en nuestro proyecto, seria algo recomendable implementar pruebas unitarias en la aplicación, de forma que se pueda asegurar la estabilidad del sistema en caso de que este quiera escalar, aplicar los unit testing permitirá validar de forma automática la separación de responsabilidad a medida que el proyecto vaya escalando.
+
+    \item Se recomienda la aplicación de mecanismos de persistencia local utilizando caché dentro de los repositorios o viewmodel, esto permitirá potencia la gestión reactiva que se logra con el Provider. Esto haría que la aplicación puede mostrar contenido incluso sin conexión a internet, mejorando la satisfacción del usuario aprovechando la infraestructura de estado ya construida.
+    
+    \item Tomando la conexión que se realiza con una API externo, seria recomendable optimizar el consumo de datos aplicando técnicas de paginación infinita en lugar de una paginación manual, además de mejorar el manejo de errores de red con mensajes amigables para asegurar e informar sobre el rendimiento optimo en dispositivos con conexiones inestables.
+\end{itemize}

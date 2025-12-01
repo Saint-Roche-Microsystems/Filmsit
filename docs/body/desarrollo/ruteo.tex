@@ -1,0 +1,11 @@
+\subsection{Ruteo}
+
+La aplicación cuenta con dos rutas principales, las cuales se encuentran declaradas en el archivo \lstinline{app\_routes.dart}:
+
+\begin{itemize}
+    \item \textbf{home: } Utiliza la ruta “/”, siendo una ruta estática que llama a el widget \lstinline{HomeScreen}.
+    
+    \item \textbf{movieDetail: } Utiliza la ruta “/movie-detail” , siendo una ruta dinámica que llama al widget \lstinline{MovieDetailScreen}. También verifica que se le haya pasado un argumento de tipo \lstinline{int} que hace referencia al id de la película para poder obtener sus resultados y poder mostrarlos en pantalla.
+\end{itemize}
+
+Adicionalmente, se cuenta un caso donde se accede a una ruta inválida o no especificada, en estos caso se define una pantalla de error simple \lstinline{Errorpage} que muestra un mensaje indicando el error junto con un botón para volver a la pantalla anterior.
