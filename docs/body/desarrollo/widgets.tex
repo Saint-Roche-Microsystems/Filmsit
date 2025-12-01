@@ -1,0 +1,114 @@
+\subsection{Widgets}
+
+Estos widgets fueron separados en base a componentes mas grandes, tratando de hacer que sean lo más resutilziables posibles. En varios casos se juntan para poder generar partes de una sección o página más grande.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6 \textwidth, height=9cm, keepaspectratio]{widgets.png}
+    \caption{Archivos de widgets}
+    \label{fig:project_widgets}
+\end{figure}
+
+Entre los widgets más importantes se encuentran:
+
+\textbf{Pagination}
+
+Este widget se compone de botones más pequeños, los que corresponden a flechas de atras y adelante y los botones con los números de página.
+
+Para este caso se limitó al widget para que solo pueda mostrar 3 botoes de página a la vez. Si se presionan otros botones o las flechas, se actualiza la página y se muestran los otros números. También se definió un máximo de 5 páginas para toda la aplicación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5 \textwidth, height=6cm, keepaspectratio]{pagination_widget.png}
+    \caption{Widget de paginación}
+    \label{fig:pagination_widget}
+\end{figure}
+
+
+\textbf{SearchBar}
+
+Esta barra de búsqueda se compone de dos elementos. Por un lado se tiene el campo de texto donde se ingresa un texto a buscar. Este campo es controlado por una función \lstinline{debounce} en el viewmodel, para evitar hacer muchas peticiones a la API mientras el usuario escribe.
+
+Por otro lado, se tiene un \lstinline{Overlay} que despliega una lista con los resultados obtenidos al hacer la consulta. Esta se ubica en la parte inferior del searchbar.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5 \textwidth, height=7cm, keepaspectratio]{search_widget.png}
+    \caption{Widget de barra de búsqueda}
+    \label{fig:searchbar_widget}
+\end{figure}
+
+\textbf{FilterDropdown}
+
+Este widget muestra los géneros por los cuales se puede filtrar la lsita de películas. Para ello, se tiene un campo \lstinline{value} de tipo entero que corresponde al id del género dado por la API. Si se tiene un valor de 0 se aplica sin filtros.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5 \textwidth, height=7cm, keepaspectratio]{filter_widget.png}
+    \caption{Widget de lista de filtros}
+    \label{fig:filter_dropdown_widget}
+\end{figure}
+
+\textbf{GlassContainer}
+
+Es un contenedor genérico que aplica un efecto de vidrio esmerilado a su contenido. Este widget se utiliza en varias partes de la aplicación para mejorar la apariencia visual y resaltar ciertos elementos. En concreto su apariencia se obtiene especificando el atributo de decoración del widget de \lstinline{Container} de la siguiente forma:
+
+\begin{center}
+\begin{lstlisting}
+  decoration: BoxDecoration(
+    color: SaintColors.surface.withValues(alpha: 0.7),
+    borderRadius: borderRadius ?? BorderRadius.circular(16),
+    border: Border.all(
+      color: SaintColors.primary.withValues(alpha: 0.2),
+      width: 1,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.37),
+        blurRadius: 32,
+        offset: const Offset(0, 8),
+      ),
+    ],
+  ),
+\end{lstlisting}
+\end{center}
+
+\textbf{MovieCard}
+
+Este es el elemento mas notable de la aplciación. En escencia solo muestra una tarjeta con la imagen de la película y su título en la parte inferior. El tamaño y su contenido se adaptan al espacio disponible debido a que se utiliza el widget \lstinline{Expanded}.
+
+Adicioanlmente cuenta con dos elementos visuales más que se pueden especificar si se los quiere mostrar o no:
+
+\begin{itemize}
+  \item \textbf{score circle: } Un círculo que muestra la puntuación de la película en la parte inferior derecha sobre la tarjeta. Este cpirculo actualiza su color dependiendo del rango de la puntuación.
+   
+  \item \textbf{ribbon badge: } Una cinta en la parte superior derecha deforma inclinada que muestra un texto con un color especificado. Sirve para dar un realce a la tarjeta.
+\end{itemize}
+
+Dichos elementos se muestran por encima de la tarjeta gracias a que se los compone dentro del widget \lstinline{Stack}.
+
+Adiconalmente, estas tarjetas pueden ser presionadas con un atributo \lstinline{onTap} que recibe una función para ejecutar cuando se presiona la tarjeta. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6 \textwidth, height=8cm, keepaspectratio]{card_widget.png}
+    \caption{Widget de tarjeta de película}
+    \label{fig:movie_card_widget}
+\end{figure}
+
+
+Comúnmente el widget padre es el que suministra la función, para el caso donde se quiera pasar a la pantalla de detalles de la película, la cual es implementada mediante el siguiente código:
+
+\begin{center}
+\begin{lstlisting}
+onTap: (movie) {
+  Navigator.pushNamed(context,
+    AppRoutes.movieDetail,
+    arguments: MovieDetailsArguments(movieId: movie.id),
+  );
+},
+\end{lstlisting}
+\end{center}
+
+Notar que el atributo \lstinline{movie} es generalmente dado por el viewmodel. Para pasar a la pantalla de detalle se especifica la ruta \lstinline{AppRoutes.movieDetail} y se pasan los argumentos necesarios mediante la clase \lstinline{MovieDetailsArguments}, en este caso es simple porque solo es el id.
+
